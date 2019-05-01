@@ -37,6 +37,9 @@ def load_OU_ISIR(dataset_path, shuffle):
             
     """ Read View, Path """
     
+    view_dict = {0:1, 15:2, 30:3, 45:4, 60:5, 75:6, 90:7,
+                 180:8, 195:9, 210:10, 225:11, 240:12, 255:13, 270:14}
+    
     for _view in os.listdir( dataset_path ):
         view_path = os.path.join(dataset_path, _view)
         
@@ -44,11 +47,11 @@ def load_OU_ISIR(dataset_path, shuffle):
             
             if int(_seq[0:5]) in train_IDs:
                 train_seq_path.append( os.path.join( view_path, _seq ) )
-                train_view.append( _view[0:3] )
+                train_view.append( view_dict[int(_view[0:3])] )
                 train_label.append( int(_seq[0:5]))
             elif int(_seq[0:5]) in test_IDs:
                 test_seq_path.append( os.path.join( view_path, _seq ) )
-                test_view.append( _view[0:3] )
+                test_view.append( view_dict[int(_view[0:3])] )
                 test_label.append( int(_seq[0:5]))
                 
                         

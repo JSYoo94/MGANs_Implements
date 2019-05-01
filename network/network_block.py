@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+import numpy as np
+
 class ConvBlock(nn.Module):
     
     def __init__(self, channels_in, channels_out, kernel_size, **kwargs):
@@ -9,12 +11,20 @@ class ConvBlock(nn.Module):
         self.conv = nn.Conv2d(channels_in, channels_out, kernel_size, bias=False, **kwargs)
         self.bn = nn.BatchNorm2d(channels_out)
         
+        self.relu = nn.LeakyReLU(0.02)
+        
     def forward(self, input):
         
         input = self.conv(input)
-        input = self.bn(input)
+        input = self.bn(input) 
         
-        return F.leaky_relu(input, inplace=True)
+        return self.relu(input)
+    
+    def weight_init(self):
+        
+        nn.init.xavier_uniform_(self.conv.weight.data)
+        self.bn.weight.data.normal_(1.0, 0.02)
+        self.bn.bias.data.fill_(0)
     
 class DeconvBlock(nn.Module):
     
@@ -34,3 +44,10 @@ class DeconvBlock(nn.Module):
             input = self.bn(input)
             
         return input
+    
+    def weight_init(self):
+        
+        nn.init.xavier_uniform_(self.deconv.weight.data)
+        
+        self.bn.weight.data.normal_(1.0, 0.02)
+        self.bn.bias.data.fill_(0)

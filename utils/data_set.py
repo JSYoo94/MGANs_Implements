@@ -11,6 +11,13 @@ class OU_ISIR(torch.utils.data.Dataset):
         
         self.data_size = len(self.label)
         
+        self.set_label = set(self.label)
+        
+        self.index_dict = {}
+        
+        for label in self.set_label:
+            self.index_dict[label] = [i for i, _label in enumerate(self.label) if label == _label]
+        
     def load_data(self, index):
         return self.__getitem__(index)
     
@@ -19,8 +26,7 @@ class OU_ISIR(torch.utils.data.Dataset):
     
     def __getitem__(self, index):
         
-        data = self.__loader__( self.seq_path[index]) / 255.0
-        
+        data = self.__loader__(self.seq_path[index]) / 255.0
         return data, self.view[index], self.label[index]
     
     def __len__(self):
