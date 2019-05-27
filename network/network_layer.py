@@ -129,3 +129,54 @@ class Discriminator(nn.Module):
         self.conv4.weight_init()        
         
         nn.init.xavier_uniform_(self.linear.weight.data)
+        
+class ViewAngleClassifier2(nn.Module):
+    
+    def __init__(self):
+        super(ViewAngleClassifier2, self).__init__()
+        
+        self.linear1 = nn.Linear(512, 512)
+        self.linear2 = nn.Linear(512, 14)
+        
+        self.softmax = nn.Softmax(dim=1)
+        
+    def forward(self, input):
+        
+        input = self.linear1(input)
+        input = self.linear2(input)
+        
+        output = self.softmax(input)
+        
+        return output
+    
+    def weight_init(self):
+        
+        nn.init.xavier_uniform_(self.linear1.weight.data)
+        nn.init.xavier_uniform_(self.linear2.weight.data)
+        
+class ViewAngleClassifier5(nn.Module):
+    
+    def __init__(self):
+        super(ViewAngleClassifier5, self).__init__()
+        
+        self.linear1 = nn.Linear(512, 256)
+        self.linear2 = nn.Linear(256, 128)
+        self.linear3 = nn.Linear(128, 14)
+        
+        self.softmax = nn.Softmax(dim=1)
+        
+    def forward(self, input):
+        
+        input = self.linear1(input)
+        input = self.linear2(input)
+        input = self.linear3(input)
+        
+        output = self.softmax(input)
+        
+        return output
+    
+    def weight_init(self):
+        
+        nn.init.xavier_uniform_(self.linear1.weight.data)
+        nn.init.xavier_uniform_(self.linear2.weight.data)
+        nn.init.xavier_uniform_(self.linear3.weight.data)

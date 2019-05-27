@@ -47,6 +47,7 @@ def encode_label_onehot(label, set_labels):
         label_encode[i][label_dict[label[i]]] = 1
     
     return Variable(torch.from_numpy(label_encode).float())
+
         
 def drawLoss(loss_dict):
     plt.style.use(['ggplot'])
